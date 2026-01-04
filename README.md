@@ -1,4 +1,4 @@
-# Testing Speed
+# Testing Net Speed
 
 A fast and reliable speed test application built with Node.js and Express, leveraging the Fast Speedtest API for accurate internet speed measurements.
 
@@ -24,7 +24,7 @@ A fast and reliable speed test application built with Node.js and Express, lever
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/PatelAbhay550/testingspeed.git
+git clone https://github.com/PatelAbhay550/testingnetseed.git
 cd testingspeed
 ```
 
