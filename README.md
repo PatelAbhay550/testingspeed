@@ -24,8 +24,8 @@ A fast and reliable speed test application built with Node.js and Express, lever
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/PatelAbhay550/testing-speed.git
-cd testing-speed
+git clone https://github.com/PatelAbhay550/testingspeed.git
+cd testingspeed
 ```
 
 2. Install dependencies:
