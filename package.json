@@ -1,0 +1,19 @@
+{
+  "name": "mcq",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.18.2",
+  "dependencies": {
+    "express": "^5.2.1",
+    "fast-speedtest-api": "^0.3.2",
+    "mlab-speed-test": "^1.0.0"
+  }
+}
