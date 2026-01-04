@@ -130,39 +130,50 @@
             statusEl.className = 'status';
             
             try {
-                const eventSource = new EventSource('/test');
+                const testUrl = 'https://speed.cloudflare.com/__down?bytes=25000000';
+                let totalBytes = 0;
+                const startTime = Date.now();
+                let lastUpdateTime = startTime;
+                let lastBytes = 0;
                 
-                eventSource.onmessage = (event) => {
-                    const data = JSON.parse(event.data);
+                // Run 3 sequential downloads
+                for (let i = 0; i < 3; i++) {
+                    const response = await fetch(testUrl);
+                    const reader = response.body.getReader();
                     
-                    if (data.error) {
-                        eventSource.close();
-                        speedEl.textContent = '0.00';
-                        statusEl.textContent = 'Error: ' + data.error;
-                        statusEl.className = 'status error';
-                        btn.disabled = false;
-                    } else if (data.done) {
-                        eventSource.close();
-                        speedEl.textContent = data.speed;
-                        statusEl.textContent = 'Test complete';
-                        btn.disabled = false;
-                    } else if (data.progress) {
-                        speedEl.textContent = data.progress;
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+                        
+                        totalBytes += value.length;
+                        const now = Date.now();
+                        
+                        // Update speed every 200ms
+                        if (now - lastUpdateTime > 200) {
+                            const timeDiff = (now - lastUpdateTime) / 1000;
+                            const bytesDiff = totalBytes - lastBytes;
+                            const speedMbps = (bytesDiff * 8) / (timeDiff * 1000000);
+                            
+                            speedEl.textContent = speedMbps.toFixed(2);
+                            
+                            lastUpdateTime = now;
+                            lastBytes = totalBytes;
+                        }
                     }
-                };
+                }
                 
-                eventSource.onerror = () => {
-                    eventSource.close();
-                    speedEl.textContent = '0.00';
-                    statusEl.textContent = 'Connection error';
-                    statusEl.className = 'status error';
-                    btn.disabled = false;
-                };
+                // Calculate final average speed
+                const totalTime = (Date.now() - startTime) / 1000;
+                const finalSpeed = (totalBytes * 8) / (totalTime * 1000000);
+                
+                speedEl.textContent = finalSpeed.toFixed(2);
+                statusEl.textContent = 'Test complete';
                 
             } catch (error) {
                 speedEl.textContent = '0.00';
                 statusEl.textContent = 'Error: ' + error.message;
                 statusEl.className = 'status error';
+            } finally {
                 btn.disabled = false;
             }
         }
