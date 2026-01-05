@@ -16,6 +16,14 @@
       "dest": "/public/$1"
     },
     {
+      "src": "/blog",
+      "dest": "/index.js"
+    },
+    {
+      "src": "/api/location",
+      "dest": "/index.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.js"
     }
