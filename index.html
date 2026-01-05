@@ -145,7 +145,27 @@
         <h1>Internet Speed Test</h1>
         
         <div class="location-info" id="locationInfo">
-            <div>📍 Loading location...</div>
+            <div style="display: grid; gap: 12px; text-align: left;">
+                            <div style="font-weight: 600; font-size: 15px; text-align: center; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb;">
+                                📍 Your Location
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 18px;">🌍</span>
+                                <span><strong>Location:</strong> Fetching...</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 18px;">📶</span>
+                                <span><strong>ISP:</strong> Fetching Your ISP...</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 18px;">🕐</span>
+                                <span><strong>Timezone:</strong> Locating...</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 18px;">🌐</span>
+                                <span><strong>IP:</strong> Fetching...</span>
+                            </div>
+                        </div>
         </div>
         
         <div class="speed-display" id="speed">0.00</div>
