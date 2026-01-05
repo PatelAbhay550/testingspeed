@@ -28,7 +28,7 @@ A fast and reliable internet speed test application for Indian users. Test your 
 1. Clone the repository:
 ```bash
 git clone https://github.com/PatelAbhay550/testingspeed.git
-cd testingnetseed
+cd testingspeed
 ```
 
 2. Install dependencies:
