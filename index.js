@@ -15,6 +15,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.get('/blog', (req, res) => {
+    res.sendFile(path.join(__dirname, 'blog.html'));
+});
+
 // API endpoint to get user location
 app.get('/api/location', async (req, res) => {
     try {
