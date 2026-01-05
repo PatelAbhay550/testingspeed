@@ -104,11 +104,32 @@
         .error {
             color: #dc2626;
         }
+
+        .location-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .location-info strong {
+            color: #111827;
+        }
+
+        .location-info div {
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Internet Speed Test</h1>
+        
+        <div class="location-info" id="locationInfo">
+            <div>📍 Loading location...</div>
+        </div>
         
         <div class="speed-display" id="speed">0.00</div>
         <div class="speed-label">Mb/s</div>
@@ -119,6 +140,49 @@
     </div>
 
     <script>
+        // Fetch and display user location on page load
+        async function loadLocation() {
+            const locationEl = document.getElementById('locationInfo');
+            try {
+                const response = await fetch('/api/location');
+                const data = await response.json();
+                
+                if (data.success && data.location) {
+                    const loc = data.location;
+                    locationEl.innerHTML = `
+                        <div style="display: grid; gap: 12px; text-align: left;">
+                            <div style="font-weight: 600; font-size: 15px; text-align: center; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb;">
+                                📍 Your Location
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 18px;">🌍</span>
+                                <span><strong>Location:</strong> ${loc.city || 'Unknown'}, ${loc.region || ''} ${loc.country || ''}</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 18px;">📶</span>
+                                <span><strong>ISP:</strong> ${loc.isp || 'Unknown'}</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 18px;">🕐</span>
+                                <span><strong>Timezone:</strong> ${loc.timezone || 'Unknown'}</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 18px;">🌐</span>
+                                <span><strong>IP:</strong> ${loc.ip || 'Unknown'}</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    locationEl.innerHTML = '<div>📍 Location unavailable</div>';
+                }
+            } catch (error) {
+                locationEl.innerHTML = '<div>📍 Could not load location</div>';
+            }
+        }
+
+        // Load location when page loads
+        window.addEventListener('DOMContentLoaded', loadLocation);
+
         async function runTest() {
             const btn = document.getElementById('testBtn');
             const speedEl = document.getElementById('speed');

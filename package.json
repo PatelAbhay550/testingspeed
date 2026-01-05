@@ -14,8 +14,6 @@
   "license": "ISC",
   "packageManager": "pnpm@10.18.2",
   "dependencies": {
-    "express": "^5.2.1",
-    "fast-speedtest-api": "^0.3.2",
-    "mlab-speed-test": "^1.0.0"
+    "express": "^5.2.1"
   }
 }
