@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="7-6j7haeyJWEhikD2wtLIv8Ei8tdX7VOIO3amkGNYdo" />
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Net Speed">
     <title>Testing Net Speed - Free Jio, Airtel, and Vodafone Internet Speed Test</title>
-    <link rel="icon" href="/public/favicon.svg" type="image/svg+xml">
+    <link rel="manifest" href="/public/manifest.json">
+    <link rel="apple-touch-icon" href="/public/icon-192.svg">
+    <link rel="icon" href="/public/icon-512.svg" type="image/svg+xml">
     <link rel="shortcut icon" href="/public/favicon.ico" type="image/x-icon">
     <link rel="canonical" href="https://www.testingnetspeed.vercel.app/">
     <meta name="description" content="Check internet speed of Jio, Airtel, and Vodafone with our free and easy-to-use speed test tool. Measure your download and upload speeds in just a few seconds.">
@@ -180,108 +186,6 @@
         </div>
     </div>
 
-    <script>
-        // Fetch and display user location on page load
-        async function loadLocation() {
-            const locationEl = document.getElementById('locationInfo');
-            try {
-                const response = await fetch('/api/location');
-                const data = await response.json();
-                
-                if (data.success && data.location) {
-                    const loc = data.location;
-                    locationEl.innerHTML = `
-                        <div style="display: grid; gap: 12px; text-align: left;">
-                            <div style="font-weight: 600; font-size: 15px; text-align: center; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb;">
-                                📍 Your Location
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <span style="font-size: 18px;">🌍</span>
-                                <span><strong>Location:</strong> ${loc.city || 'Unknown'}, ${loc.region || ''} ${loc.country || ''}</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <span style="font-size: 18px;">📶</span>
-                                <span><strong>ISP:</strong> ${loc.isp || 'Unknown'}</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <span style="font-size: 18px;">🕐</span>
-                                <span><strong>Timezone:</strong> ${loc.timezone || 'Unknown'}</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <span style="font-size: 18px;">🌐</span>
-                                <span><strong>IP:</strong> ${loc.ip || 'Unknown'}</span>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    locationEl.innerHTML = '<div>📍 Location unavailable</div>';
-                }
-            } catch (error) {
-                locationEl.innerHTML = '<div>📍 Could not load location</div>';
-            }
-        }
-
-        // Load location when page loads
-        window.addEventListener('DOMContentLoaded', loadLocation);
-
-        async function runTest() {
-            const btn = document.getElementById('testBtn');
-            const speedEl = document.getElementById('speed');
-            const statusEl = document.getElementById('status');
-            
-            btn.disabled = true;
-            speedEl.textContent = '0.00';
-            statusEl.textContent = 'Testing...';
-            statusEl.className = 'status';
-            
-            try {
-                const testUrl = 'https://speed.cloudflare.com/__down?bytes=25000000';
-                let totalBytes = 0;
-                const startTime = Date.now();
-                let lastUpdateTime = startTime;
-                let lastBytes = 0;
-                
-                // Run 3 sequential downloads
-                for (let i = 0; i < 3; i++) {
-                    const response = await fetch(testUrl);
-                    const reader = response.body.getReader();
-                    
-                    while (true) {
-                        const { done, value } = await reader.read();
-                        if (done) break;
-                        
-                        totalBytes += value.length;
-                        const now = Date.now();
-                        
-                        // Update speed every 200ms
-                        if (now - lastUpdateTime > 200) {
-                            const timeDiff = (now - lastUpdateTime) / 1000;
-                            const bytesDiff = totalBytes - lastBytes;
-                            const speedMbps = (bytesDiff * 8) / (timeDiff * 1000000);
-                            
-                            speedEl.textContent = speedMbps.toFixed(2);
-                            
-                            lastUpdateTime = now;
-                            lastBytes = totalBytes;
-                        }
-                    }
-                }
-                
-                // Calculate final average speed
-                const totalTime = (Date.now() - startTime) / 1000;
-                const finalSpeed = (totalBytes * 8) / (totalTime * 1000000);
-                
-                speedEl.textContent = finalSpeed.toFixed(2);
-                statusEl.textContent = 'Test complete';
-                
-            } catch (error) {
-                speedEl.textContent = '0.00';
-                statusEl.textContent = 'Error: ' + error.message;
-                statusEl.className = 'status error';
-            } finally {
-                btn.disabled = false;
-            }
-        }
-    </script>
+    <script src="/public/app.js"></script>
 </body>
 </html>

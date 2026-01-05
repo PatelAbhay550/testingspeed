@@ -1,0 +1,41 @@
+{
+  "name": "Testing Net Speed - Internet Speed Test",
+  "short_name": "Net Speed",
+  "description": "Free internet speed test for Jio, Airtel, Vodafone and all Indian ISPs",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f5f5",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/public/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/public/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["utilities", "productivity"],
+  "shortcuts": [
+    {
+      "name": "Start Speed Test",
+      "short_name": "Test",
+      "description": "Run a speed test",
+      "url": "/",
+      "icons": [{ "src": "/public/icon-192.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "How to Use",
+      "short_name": "Guide",
+      "description": "View usage guide",
+      "url": "/blog",
+      "icons": [{ "src": "/public/icon-192.svg", "sizes": "192x192" }]
+    }
+  ]
+}
