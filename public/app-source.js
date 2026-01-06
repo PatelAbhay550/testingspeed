@@ -41,13 +41,8 @@ function drawChart() {
     const width = chart.width;
     const height = chart.height;
     const data = isUploadTest ? uploadChartData : chartData;
-    
-    // Clear the entire canvas
     ctx.clearRect(0, 0, width, height);
-    
-    // Need at least 1 data point to show something
-    if (data.length < 1) return;
-    
+    if (data.length < 2) return;
     const maxValue = Math.max(...data, 10);
     const padding = { left: 40, right: 20, top: 10, bottom: 10 };
     const chartWidth = width - padding.left - padding.right;
@@ -79,24 +74,13 @@ function drawChart() {
     ctx.strokeStyle = gradient;
     ctx.lineWidth = 3;
     ctx.beginPath();
-    
-    // Handle single data point or multiple data points
-    if (data.length === 1) {
-        // For single data point, draw a dot
-        const x = padding.left + chartWidth / 2;
-        const y = padding.top + chartHeight - (data[0] / maxValue) * chartHeight;
-        ctx.arc(x, y, 4, 0, 2 * Math.PI);
-        ctx.fill();
-    } else {
-        // For multiple data points, draw line
-        data.forEach((value, index) => {
-            const x = padding.left + (index / (data.length - 1)) * chartWidth;
-            const y = padding.top + chartHeight - (value / maxValue) * chartHeight;
-            if (index === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-        });
-        ctx.stroke();
-    }
+    data.forEach((value, index) => {
+        const x = padding.left + (index / (data.length - 1)) * chartWidth;
+        const y = padding.top + chartHeight - (value / maxValue) * chartHeight;
+        if (index === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
     const fillGradient = ctx.createLinearGradient(0, padding.top, 0, padding.top + chartHeight);
     if (isUploadTest) {
         fillGradient.addColorStop(0, "rgba(16, 185, 129, 0.2)");
@@ -106,20 +90,16 @@ function drawChart() {
         fillGradient.addColorStop(1, "rgba(37, 99, 235, 0.05)");
     }
     ctx.fillStyle = fillGradient;
-    
-    // Only draw fill for multiple data points
-    if (data.length > 1) {
-        ctx.beginPath();
-        ctx.moveTo(padding.left, padding.top + chartHeight);
-        data.forEach((value, index) => {
-            const x = padding.left + (index / (data.length - 1)) * chartWidth;
-            const y = padding.top + chartHeight - (value / maxValue) * chartHeight;
-            ctx.lineTo(x, y);
-        });
-        ctx.lineTo(padding.left + chartWidth, padding.top + chartHeight);
-        ctx.closePath();
-        ctx.fill();
-    }
+    ctx.beginPath();
+    ctx.moveTo(padding.left, padding.top + chartHeight);
+    data.forEach((value, index) => {
+        const x = padding.left + (index / (data.length - 1)) * chartWidth;
+        const y = padding.top + chartHeight - (value / maxValue) * chartHeight;
+        ctx.lineTo(x, y);
+    });
+    ctx.lineTo(padding.left + chartWidth, padding.top + chartHeight);
+    ctx.closePath();
+    ctx.fill();
 }
 
 function updateStats(upload = false) {
@@ -384,15 +364,8 @@ async function testUpload() {
     
     uploadBox.classList.add("active");
     status.textContent = "Testing upload...";
-    
-    // Clear canvas and reinitialize for upload
-    uploadChartData = [];
     isUploadTest = true;
-    
-    // Clear the canvas
-    if (chart) {
-        chart.ctx.clearRect(0, 0, chart.width, chart.height);
-    }
+    uploadChartData = [];
     
     try {
         const chunkSize = 1024 * 1024 * 2; // 2MB chunks for more frequent updates
@@ -420,12 +393,8 @@ async function testUpload() {
                     const speedMbps = (chunkSize * 8) / (uploadTime / 1000) / 1000000;
                     uploadChartData.push(speedMbps);
                     uploadSpeed.textContent = speedMbps.toFixed(2);
-                    
-                    // Draw chart with current upload data
-                    if (uploadChartData.length >= 2) {
-                        drawChart();
-                        updateStats(true);
-                    }
+                    drawChart();
+                    updateStats(true);
                 }
                 
                 // Break if we have enough data points

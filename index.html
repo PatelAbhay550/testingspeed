@@ -139,6 +139,16 @@
             cursor: not-allowed;
         }
 
+        #shareBtn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            display: none;
+            margin-left: 10px;
+        }
+
+        #shareBtn:hover {
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+        }
+
         .status {
             color: #666;
             margin-top: 20px;
@@ -321,9 +331,14 @@
             </div>
         </div>
         
-        <button id="testBtn" onclick="runTest()">Start Test</button>
+        <div style="margin-top: 20px;">
+            <button id="testBtn" onclick="runTest()">Start Test</button>
+            <button id="shareBtn" onclick="shareResults()" style="display:none;">Share Results</button>
+        </div>
         
         <div class="status" id="status"></div>
+        
+        <div id="qualityScore" style="display: none;"></div>
 
         <div class="blog-link">
             <a href="/blog">📖 How to use this speed test tool</a>
